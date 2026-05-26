@@ -111,6 +111,12 @@ function App() {
   }, [state.todos])
   
   // Issue 10: Inline event handler dengan arrow function (re-create setiap render)
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      addTodo();
+    }
+  };
+
   return (
     <div className="app">
       <h1>My Todo List</h1>
@@ -119,13 +125,9 @@ function App() {
       <div className="input-section">
         <input 
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              addTodo()
-            }
-          }}
+          value={state.input}
+          onChange={(e) => setState(prev => ({ ...prev, input: e.target.value }))}
+          onKeyDown={handleKeyPress}
           placeholder="What needs to be done?"
         />
         <button onClick={addTodo}>Add</button>
