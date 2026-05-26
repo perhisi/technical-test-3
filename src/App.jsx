@@ -169,24 +169,33 @@ function App() {
 
       <div className="todo-list">
         {/* Issue 13: Tidak ada handling untuk empty state */}
-        {getFilteredTodos().map((todo) => (
-          // Issue 14: Key menggunakan index bisa lebih baik dengan ID
-          <div
-            key={todo.id}
-            className={`todo-item ${todo.completed ? "completed" : ""}`}
-          >
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
-            />
-            {/* Issue 15: Potential XSS jika text dari user input */}
-            <span dangerouslySetInnerHTML={{ __html: todo.text }} />
-            <button className="delete-btn" onClick={() => deleteTodo(todo.id)}>
-              Delete
-            </button>
-          </div>
-        ))}
+        {getFilteredTodos.length === 0 ? (
+          <p className="empty-state">No todos found</p>
+        ) : (
+          getFilteredTodos.map((todo) => (
+            // Issue 14: Key menggunakan index bisa lebih baik dengan ID
+            <div
+              key={todo.id}
+              className={`todo-item ${todo.completed ? "completed" : ""}`}
+            >
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+
+              {/* Issue 15: Potential XSS jika text dari user input */}
+              <span dangerouslySetInnerHTML={{ __html: todo.text }} />
+
+              <button
+                className="delete-btn"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="stats">
