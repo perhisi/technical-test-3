@@ -16,7 +16,7 @@ function App() {
     // Load from localStorage
     const saved = localStorage.getItem('todos')
     if (saved) {
-      setTodos(JSON.parse(saved))
+      setState(prev => ({ ...prev, todos: JSON.parse(saved) }))
     }
   }, [])
   
