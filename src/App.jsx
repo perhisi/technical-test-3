@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import DOMPurify from "dompurify";
-
-// Issue 1: Inline API key (security issue)
-const API_KEY = import.meta.env.VITE_API_KEY;
 
 function App() {
   // Issue 2: State management bisa lebih baik
@@ -36,7 +33,7 @@ function App() {
     // Issue 6: Menggunakan Date.now() sebagai ID (bisa collision)
     const newTodo = {
       id: crypto.randomUUID(),
-      text: input,
+      text: state.input,
       completed: false,
       createdAt: new Date().toISOString(),
     };
@@ -174,10 +171,10 @@ function App() {
 
       <div className="todo-list">
         {/* Issue 13: Tidak ada handling untuk empty state */}
-        {getFilteredTodos.length === 0 ? (
+        {filteredTodos.length === 0 ? (
           <p className="empty-state">No todos found</p>
         ) : (
-          getFilteredTodos.map((todo) => (
+          filteredTodos.map((todo) => (
             // Issue 14: Key menggunakan index bisa lebih baik dengan ID
             //ID stabil, React bisa tracking item dengan benar, Tidak ada bug saat: delete, insert, reorder
             <div
@@ -190,7 +187,6 @@ function App() {
                 onChange={() => handleToggle(todo.id)}
               />
               {/* Issue 15: Potential XSS jika text dari user input */}
-              
               <span
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(todo.text),
@@ -213,10 +209,6 @@ function App() {
           {stats.completed}
         </p>
       </div>
-
-      {/* Issue 16: Debug code yang tertinggal */}
-      {console.log("Rendering with todos:", todos)}
-      {console.log("API Key:", API_KEY)}
     </div>
   );
 }

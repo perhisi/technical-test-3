@@ -123,3 +123,10 @@ button:hover {
 .btn.active {
   background: #28a745;
 }
+
+.empty-state {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-style: italic;
+}
