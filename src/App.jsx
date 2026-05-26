@@ -100,11 +100,15 @@ function App() {
   }, [state.todos, state.filter])
   
   // Issue 9: Calculation yang tidak perlu di setiap render
-  const stats = {
-    total: todos.length,
-    completed: todos.filter(t => t.completed).length,
-    active: todos.filter(t => !t.completed).length
-  }
+  const stats = useMemo(() => {
+    const completed = state.todos.filter(t => t.completed).length
+  
+    return {
+      total: state.todos.length,
+      completed,
+      active: state.todos.length - completed,
+    }
+  }, [state.todos])
   
   // Issue 10: Inline event handler dengan arrow function (re-create setiap render)
   return (
