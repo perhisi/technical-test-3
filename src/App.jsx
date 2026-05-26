@@ -5,9 +5,11 @@ const API_KEY = import.meta.env.VITE_API_KEY
 
 function App() {
   // Issue 2: State management bisa lebih baik
-  const [todos, setTodos] = useState([])
-  const [input, setInput] = useState('')
-  const [filter, setFilter] = useState('all')
+  const [state, setState] = useState({
+    todos: [],
+    input: '',
+    filter: 'all',
+  })
   
   // Issue 3: useEffect tanpa dependency array yang tepat
   useEffect(() => {
