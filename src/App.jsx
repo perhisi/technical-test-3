@@ -89,15 +89,15 @@ function App() {
   }
   
   // Issue 8: Logic filtering yang bisa dipindah ke useMemo
-  const getFilteredTodos = () => {
-    if (filter === 'active') {
-      return todos.filter(todo => !todo.completed)
+  const filteredTodos = useMemo(() => {
+    if (state.filter === 'active') {
+      return state.todos.filter(todo => !todo.completed)
     }
-    if (filter === 'completed') {
-      return todos.filter(todo => todo.completed)
+    if (state.filter === 'completed') {
+      return state.todos.filter(todo => todo.completed)
     }
-    return todos
-  }
+    return state.todos
+  }, [state.todos, state.filter])
   
   // Issue 9: Calculation yang tidak perlu di setiap render
   const stats = {
