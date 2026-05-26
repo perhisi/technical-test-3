@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import DOMPurify from "dompurify";
 
 // Issue 1: Inline API key (security issue)
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -119,6 +120,10 @@ function App() {
     }
   };
 
+  const handleToggle = (id) => {
+    toggleTodo(id);
+  };
+
   return (
     <div className="app">
       <h1>My Todo List</h1>
@@ -174,6 +179,7 @@ function App() {
         ) : (
           getFilteredTodos.map((todo) => (
             // Issue 14: Key menggunakan index bisa lebih baik dengan ID
+            //ID stabil, React bisa tracking item dengan benar, Tidak ada bug saat: delete, insert, reorder
             <div
               key={todo.id}
               className={`todo-item ${todo.completed ? "completed" : ""}`}
@@ -181,12 +187,15 @@ function App() {
               <input
                 type="checkbox"
                 checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
+                onChange={() => handleToggle(todo.id)}
               />
-
               {/* Issue 15: Potential XSS jika text dari user input */}
-              <span dangerouslySetInnerHTML={{ __html: todo.text }} />
-
+              
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(todo.text),
+                }}
+              />
               <button
                 className="delete-btn"
                 onClick={() => deleteTodo(todo.id)}
