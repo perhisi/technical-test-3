@@ -104,3 +104,22 @@ button:hover {
   color: #666;
   font-size: 14px;
 }
+
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn.active {
+  background: #28a745;
+}
