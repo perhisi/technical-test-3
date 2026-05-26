@@ -45,13 +45,47 @@ function App() {
   
   // Issue 7: Tidak ada error handling
   const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id))
+    try {
+      setState(prev => {
+        const exists = prev.todos.some(todo => todo.id === id)
+  
+        if (!exists) {
+          console.warn('Delete failed: todo not found', id)
+          return prev
+        }
+  
+        return {
+          ...prev,
+          todos: prev.todos.filter(todo => todo.id !== id),
+        }
+      })
+    } catch (error) {
+      console.error('Error deleting todo:', error)
+    }
   }
   
   const toggleTodo = (id) => {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ))
+    try {
+      setState(prev => {
+        const exists = prev.todos.some(todo => todo.id === id)
+  
+        if (!exists) {
+          console.warn('Toggle failed: todo not found', id)
+          return prev
+        }
+  
+        return {
+          ...prev,
+          todos: prev.todos.map(todo =>
+            todo.id === id
+              ? { ...todo, completed: !todo.completed }
+              : todo
+          ),
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling todo:', error)
+    }
   }
   
   // Issue 8: Logic filtering yang bisa dipindah ke useMemo
