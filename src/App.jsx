@@ -26,8 +26,8 @@ function App() {
   }, [state.todos])
   
   // Issue 5: Function yang tidak di-memoize, re-create setiap render
-  const addTodo = () => {
-    if (input.trim() === '') {
+  const addTodo = useCallback(() => {
+    if (state.input.trim() === '') {
       alert('Please enter a todo')
       return
     }
@@ -40,9 +40,8 @@ function App() {
       createdAt: new Date().toISOString()
     }
     
-    setTodos([...todos, newTodo])
-    setInput('')
-  }
+    setState(prev => ({ ...prev, todos: [...prev.todos, newTodo], input: '' }))
+  }, [state.input])
   
   // Issue 7: Tidak ada error handling
   const deleteTodo = (id) => {
